@@ -23,6 +23,14 @@ public class Board {
         reset();
     }
 
+    /** Initializes board by copying from another.
+     *
+     * @param board Board to copy from.
+     * */
+    public Board(Board board) {
+        this.copy(board);
+    }
+
     /** Initializes board with given configuration and starting turn.
      *
      * @param config Board configuration.
@@ -34,6 +42,22 @@ public class Board {
         }
         _turn = turn;
         _emptyPlacesInitialized = false;
+    }
+
+    /** Copies board to this board.
+     *
+     * @param board Board to copy from.
+     * */
+    void copy(Board board) {
+        for (int r = 0; r < BOARD_SIZE; r++) {
+            System.arraycopy(board._board[r], 0, _board[r], 0, BOARD_SIZE);
+        }
+        _turn = board._turn;
+        _moves.addAll(board._moves);
+        _emptyPlacesInitialized = board._emptyPlacesInitialized;
+        if (_emptyPlacesInitialized) {
+            _emptyPlaces.addAll(board._emptyPlaces);
+        }
     }
 
     /** Resets the board to starting configuration. */
@@ -93,13 +117,13 @@ public class Board {
      *
      * @return List of all empty place strings.
      * */
-    List<String> emptyPlaces() {
+    public List<String> emptyPlaces() {
         if (_emptyPlacesInitialized) {
             return _emptyPlaces;
         }
         List<String> emptyPlaces = new ArrayList<>();
-        for (int r = 0; r < BOARD_SIZE; r++) {
-            for (int c = 0; c < BOARD_SIZE; c++) {
+        for (int c = 0; c < BOARD_SIZE; c++) {
+            for (int r = 0; r < BOARD_SIZE; r++) {
                 if (_board[r][c] == E) {
                     emptyPlaces.add(place(c, r));
                 }
@@ -117,7 +141,7 @@ public class Board {
      * @return True if piece was put on the place, false if the place
      * is not empty.
      * */
-    boolean put(int col, int row) {
+    public boolean put(int col, int row) {
         if (_board[row][col] == E) {
             _board[row][col] = _turn;
             _moves.add(place(col, row));
@@ -136,7 +160,7 @@ public class Board {
      * @return True if piece was put on the place, false if place string
      * is malformed or place is not empty.
      * */
-    boolean put(String place) {
+    public boolean put(String place) {
         if (SQ.matcher(place).matches()) {
             int[] coords = coords(place);
             return put(coords[0], coords[1]);
@@ -155,12 +179,27 @@ public class Board {
         _turn = _turn.opposite();
     }
 
-    /** Returns the current turn. */
-    Piece turn() {
+    /** Returns the move list.
+     *
+     * @return _moves.
+     * */
+    public List<String> moves() {
+        return _moves;
+    }
+
+    /** Returns the current turn.
+     *
+     * @return _turn.
+     * */
+    public Piece turn() {
         return _turn;
     }
 
-    Piece winner() {
+    /** Returns the winner.
+     *
+     * @return null if there is no winner, E if tie, or the winning Piece.
+     * */
+    public Piece winner() {
         if ((_board[0][0] == _board[0][1] && _board[0][1] == _board[0][2] && _board[0][0] != E)
                 || (_board[1][0] == _board[1][1] && _board[0][1] == _board[1][2] && _board[1][0] != E)
                 || (_board[2][0] == _board[2][1] && _board[2][1] == _board[2][2] && _board[2][0] != E)
@@ -181,10 +220,10 @@ public class Board {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("===\n");
-        for (int r = 2; r >= 0; r--) {
+        for (int r = BOARD_SIZE - 1; r >= 0; r--) {
             sb.append("\t");
             sb.append(r + 1);
-            for (int c = 0; c < 3; c++) {
+            for (int c = 0; c < BOARD_SIZE; c++) {
                 sb.append(" ");
                 sb.append(_board[r][c]);
             }
@@ -197,6 +236,45 @@ public class Board {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object other) {
+        try {
+            Board otherBoard = (Board) other;
+            for (int r = 0; r < BOARD_SIZE; r++) {
+                for (int c = 0; c < BOARD_SIZE; c++) {
+                    if (_board[r][c] != otherBoard._board[r][c]) {
+                        return false;
+                    }
+                }
+            }
+            if (_turn != otherBoard._turn) {
+                return false;
+            }
+            if (_moves.size() != otherBoard._moves.size()) {
+                return false;
+            }
+            if (_moves.size() > 0) {
+                for (int i = 0; i < _moves.size(); i++) {
+                    if (!_moves.get(i).equals(otherBoard._moves.get(i))) {
+                        return false;
+                    }
+                }
+            }
+            if (_emptyPlaces.size() != otherBoard._emptyPlaces.size()) {
+                return false;
+            }
+            if (_emptyPlaces.size() > 0) {
+                for (int i = 0; i < _emptyPlaces.size(); i++) {
+                    if (!_emptyPlaces.get(i).equals(otherBoard._emptyPlaces.get(i))) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } catch (ClassCastException e) {
+            return false;
+        }
+    }
 
     /** Board configuration. */
     private Piece[][] _board = new Piece[BOARD_SIZE][BOARD_SIZE];
