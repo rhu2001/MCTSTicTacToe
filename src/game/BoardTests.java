@@ -2,6 +2,7 @@ package game;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static game.Piece.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,5 +82,12 @@ public class BoardTests {
         b1.put("b3");
         b1.put("b2");
         assertNotEquals(b.emptyPlaces(), b1.emptyPlaces());
+    }
+
+    @Test
+    public void winnerTests() {
+        Piece[][] config1 = new Piece[][] {{E, E, O}, {E, O, E}, {O, E, E}};
+        Piece[][] config2 = new Piece[][] {{O, O, O}, {E, E, E}, {E, E, E}};
+        System.out.println(new Board(config1, X).winner());
     }
 }

@@ -38,6 +38,7 @@ public class Game {
                 MonteCarloTreeSearch mcts = new MonteCarloTreeSearch(board);
                 move = mcts.findMove(5000);
                 board.put(move);
+                System.out.println(Tree.cpuSide() + " to " + move);
             } else {
                 do {
                     System.out.print(board.turn() + "> ");
@@ -47,11 +48,10 @@ public class Game {
                         System.exit(0);
                     }
                 } while (!board.put(move));
+                System.out.println(Tree.cpuSide().opposite() + " to " + move);
             }
             winner = board.winner();
-            System.out.println(winner);
         }
-        System.out.println(board);
         if (winner == E) {
             System.out.println("It was a tie!");
         } else {

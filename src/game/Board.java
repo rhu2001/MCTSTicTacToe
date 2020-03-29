@@ -149,13 +149,11 @@ public class Board {
         if (_board[row][col] == E) {
             _board[row][col] = _turn;
             _moves.add(place(col, row));
-            //System.out.println(_turn + " to " + place(col, row));
             _turn = _turn.opposite();
             _emptyPlacesInitialized = false;
             _winnerKnown = false;
             return true;
         }
-        //System.out.println("Place " + place(col, row) + " is not empty.");
         return false;
     }
 
@@ -170,7 +168,6 @@ public class Board {
             int[] coords = coords(place);
             return put(coords[0], coords[1]);
         }
-        //System.out.println("Invalid place:  " + place);
         return false;
     }
 
@@ -217,7 +214,7 @@ public class Board {
                 || (_board[0][1] == _board[1][1] && _board[1][1] == _board[2][1] && _board[0][1] != E)
                 || (_board[0][2] == _board[1][2] && _board[1][2] == _board[2][2] && _board[0][2] != E)
                 || (_board[0][0] == _board[1][1] && _board[1][1] == _board[2][2] && _board[0][0] != E)
-                || (_board[0][2] == _board[1][0] && _board[1][0] == _board[2][0] && _board[0][2] != E)) {
+                || (_board[0][2] == _board[1][1] && _board[1][1] == _board[2][0] && _board[0][2] != E)) {
             winner = _turn.opposite();
         } else if (emptyPlaces().size() == 0) {
             winner = E;
@@ -225,6 +222,14 @@ public class Board {
         _winner = winner;
         _winnerKnown = true;
         return winner;
+    }
+
+    /** Returns the raw board.
+     *
+     * @return _board.
+     * */
+    public Piece[][] rawBoard() {
+        return _board;
     }
 
     @Override
