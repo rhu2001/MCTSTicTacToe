@@ -23,7 +23,7 @@ In this implementation of MCTS, other information is stored that is specific to 
 - the move on the parent's state that resulted in the node (i.e. what move led to this node's state)
 - whether the node has been expanded (more on expansion later)
 
-Every time the computer needs to make a move, the root of the tree is set to the node that represents the current game state and the following four phases are repeated until the algorithm exceeds a certain amount of time or resources.
+Every time the computer needs to make a move, the root of the tree is set to the node that represents the current game state and the following four phases are repeated until the algorithm exceeds a certain amount of time or computational resources.
 
 **1. Selection**
 
@@ -41,4 +41,4 @@ In the simulation phase (also called the rollout phase), the algorithm takes the
 
 In the backpropagation phase, the algorithm begins at the node that rollout occurred at and increments its visit count. If the node's side is the opposite of the computer's side, then the node's win count is updated (in this implementation, the win count is incremented on a win or tie and is decremented on a loss). The reason that only opposite sides have their win counts updated is because when the algorithm is selecting a move, the move incurs a game state in which the opposite side is moving. The process of updating visit counts and win counts is repeated on the successive parents of the node until the root is reached.
 
-The 4 phases of the algorithm are repeated until the algorithm has exceeded a limit on runtime and/or computational power. At that point, the algorithm selects the move that will lead it to the child of the root with the highest win count / times visited ratio.
+The 4 phases of the algorithm are repeated until the algorithm has exceeded a limit on runtime and/or computational resources. At that point, the algorithm selects the move that will lead it to the child of the root with the highest win count / times visited ratio.
