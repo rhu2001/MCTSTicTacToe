@@ -38,7 +38,7 @@ where
 - *c* is a constant used to adjust the exploration vs exploitation trade-off, usually set to `sqrt(2)`
 - *s<sub>p</sub>* is the number of times the node's parent has been visited
 
-The UCT value balances exploration and exploitation, favoring both nodes that tend to win and unexplored nodes to ensure that the best node is chosen *and* every node is well-represented.
+The UCT value balances exploration and exploitation, favoring nodes that tend to win and nodes that have been visited less often, to ensure that the best node is chosen *and* every node is well-represented.
 
 **2. Expansion**
 
