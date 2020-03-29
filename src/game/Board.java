@@ -42,6 +42,7 @@ public class Board {
         }
         _turn = turn;
         _emptyPlacesInitialized = false;
+        _winnerKnown = false;
     }
 
     /** Copies board to this board.
@@ -58,6 +59,8 @@ public class Board {
         if (_emptyPlacesInitialized) {
             _emptyPlaces.addAll(board._emptyPlaces);
         }
+        _winnerKnown = board._winnerKnown;
+        _winner = board._winner;
     }
 
     /** Resets the board to starting configuration. */
@@ -69,6 +72,7 @@ public class Board {
         }
         _turn = X;
         _emptyPlacesInitialized = false;
+        _winnerKnown = false;
     }
 
     /** Converts a place string to board coordinates.
@@ -148,6 +152,7 @@ public class Board {
             System.out.println(_turn + " to " + place(col, row));
             _turn = _turn.opposite();
             _emptyPlacesInitialized = false;
+            _winnerKnown = false;
             return true;
         }
         System.out.println("Place " + place(col, row) + " is not empty.");
@@ -170,12 +175,13 @@ public class Board {
     }
 
     /** Returns the state of the board to one turn prior. */
-    void undo() {
+    public void undo() {
         String recent = _moves.get(_moves.size() - 1);
         int[] coords = coords(recent);
         _board[coords[1]][coords[0]] = E;
         _moves.remove(_moves.size() - 1);
         _emptyPlacesInitialized = false;
+        _winnerKnown = false;
         _turn = _turn.opposite();
     }
 
@@ -200,6 +206,10 @@ public class Board {
      * @return null if there is no winner, E if tie, or the winning Piece.
      * */
     public Piece winner() {
+        if (_winnerKnown) {
+            return _winner;
+        }
+        Piece winner = null;
         if ((_board[0][0] == _board[0][1] && _board[0][1] == _board[0][2] && _board[0][0] != E)
                 || (_board[1][0] == _board[1][1] && _board[0][1] == _board[1][2] && _board[1][0] != E)
                 || (_board[2][0] == _board[2][1] && _board[2][1] == _board[2][2] && _board[2][0] != E)
@@ -208,12 +218,13 @@ public class Board {
                 || (_board[0][2] == _board[1][2] && _board[1][2] == _board[2][2] && _board[0][2] != E)
                 || (_board[0][0] == _board[1][1] && _board[1][1] == _board[2][2] && _board[0][0] != E)
                 || (_board[0][2] == _board[1][0] && _board[1][0] == _board[2][0] && _board[0][2] != E)) {
-            return _turn.opposite();
+            winner = _turn.opposite();
         } else if (emptyPlaces().size() == 0) {
-            return E;
-        } else {
-            return null;
+            winner = E;
         }
+        _winner = winner;
+        _winnerKnown = true;
+        return winner;
     }
 
     @Override
@@ -286,4 +297,8 @@ public class Board {
     private List<String> _emptyPlaces = new ArrayList<>();
     /** True iff _emptyPlaces is up-to-date. */
     private boolean _emptyPlacesInitialized = false;
+    /** This board's winner. */
+    private Piece _winner;
+    /** True iff the winner is known. */
+    private boolean _winnerKnown;
 }
