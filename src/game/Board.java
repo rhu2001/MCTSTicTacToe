@@ -257,9 +257,11 @@ public class Board {
             sb.append("\n");
         }
         sb.append("\t  a b c\n");
-        sb.append("===\n");
-        sb.append("Next move:  ");
-        sb.append(_turn);
+        sb.append("===");
+        if (winner() == null) {
+            sb.append("\nNext move:  ");
+            sb.append(_turn);
+        }
         return sb.toString();
     }
 

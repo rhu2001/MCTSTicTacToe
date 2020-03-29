@@ -1,11 +1,11 @@
 package game;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static game.Piece.*;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
+import static game.Piece.*;
 
 /** Tests for the functionality of Board class.
  *

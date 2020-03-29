@@ -2,15 +2,13 @@ package game.MCTS;
 
 import game.Board;
 import game.Piece;
-import org.antlr.v4.runtime.tree.Tree;
-
 import java.util.*;
 
 /** Tree data structure for MCTS.
  *
  * @author Richard Hu
  * */
-public class TreeNode implements Comparable<TreeNode> {
+public class TreeNode {
 
     /** Square root of 2. */
     public static final double ROOT2 = Math.sqrt(2);
@@ -47,14 +45,12 @@ public class TreeNode implements Comparable<TreeNode> {
         }
     }
 
-    /** Return the child of this node with highest UCT value by sorting the
-     * children in reverse order of UCT value and returning the first child.
+    /** Return the child of this node with highest UCT value.
      *
      * @return child with highest UCT.
      * */
     TreeNode highestUCTChild() {
-        _children.sort(Collections.reverseOrder());
-        return _children.get(0);
+        return Collections.max(_children, Comparator.comparing(TreeNode::uct));
     }
 
     /** Return a random child.
@@ -142,11 +138,6 @@ public class TreeNode implements Comparable<TreeNode> {
     @Override
     public String toString() {
         return _achievingMove + " : " + uct() + " : " + score();
-    }
-
-    @Override
-    public int compareTo(TreeNode other) {
-        return Double.compare(uct(), other.uct());
     }
 
     /** State of current board. */
