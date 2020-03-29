@@ -34,6 +34,7 @@ public class TreeNode {
         setUpRNG();
     }
 
+    /** Expands this node. */
     void expand() {
         Board temp;
         for (String move : _state.emptyPlaces()) {
@@ -43,6 +44,10 @@ public class TreeNode {
         }
     }
 
+    /** Picks out a random child.
+     *
+     * @return Random element from _children.
+     * */
     TreeNode randomChild() {
         int index = _rng.nextInt(_children.size());
         return _children.get(index);
@@ -99,14 +104,6 @@ public class TreeNode {
             winner = temp.winner();
         }
         return winner;
-    }
-
-    /** Makes a random move on the board. */
-    Board putRandom() {
-        Board nextState = new Board(_state);
-        int move = _rng.nextInt(nextState.emptyPlaces().size());
-        nextState.put(nextState.emptyPlaces().get(move));
-        return nextState;
     }
 
     /** Increments the number of times this node has been visited. */
