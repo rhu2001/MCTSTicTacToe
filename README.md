@@ -27,7 +27,18 @@ Every time the computer needs to make a move, the root of the tree is set to the
 
 **1. Selection**
 
-In the selection phase, the algorithm begins at the root node, and takes a path through successive child nodes until it reaches a leaf. The child node that is chosen is the child with the greatest Upper Confidence bounds applied to Trees (UCT) value, which is a metric that increases with the win rate of the child (exploitation) and decreases the more the child has been visited by the algorithm (exploration). This encourages the algorithm to not only pick children that win but also make sure that each child is well-represented.
+In the selection phase, the algorithm begins at the root node, and takes a path through successive child nodes until it reaches a leaf. The child node that is chosen is the child with the greatest Upper Confidence bounds applied to Trees (UCT) value, which is given by
+
+![uct](https://miro.medium.com/max/1222/1*eFzE9DWAfJKpehpbYSqivQ.png)
+
+where
+
+- *w<sub>i</sub>* is the win score of the node, usually a count of how many times games through that node win
+- *s<sub>i</sub>* is the number of times the node has been visited
+- *c* is a constant used to adjust the exploration vs exploitation trade-off, usually set to `sqrt(2)`
+- *s<sub>p</sub>* is the number of times the node's parent has been visited
+
+The UCT value balances exploration and exploitation, favoring both nodes that tend to win and unexplored nodes to ensure that the best node is chosen *and* every node is well-represented.
 
 **2. Expansion**
 
