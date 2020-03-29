@@ -9,10 +9,10 @@ public enum Piece {
     /** Names of pieces. E represents empty.*/
     E, X, O;
 
-    /** Returns the opposite of this piece.
+    /** Return the opposite of this piece.
      *
-     * @return Opposite of this piece or empty if this piece
-     * is empty.
+     * @return Opposite of this piece or E if this piece
+     * is E.
      * */
     public Piece opposite() {
         switch (this) {

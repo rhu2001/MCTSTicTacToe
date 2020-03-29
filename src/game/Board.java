@@ -12,7 +12,7 @@ import static game.Piece.*;
  * */
 public class Board {
 
-    /** The total number of possible rows or columns. */
+    /** The total number of possible rows and columns. */
     static final int BOARD_SIZE = 3;
 
     /** The regular expression for a square designation (e.g., a3). */
@@ -23,7 +23,7 @@ public class Board {
         reset();
     }
 
-    /** Initializes board by copying from another.
+    /** Initialize this board by copying from another.
      *
      * @param board Board to copy from.
      * */
@@ -31,7 +31,8 @@ public class Board {
         this.copy(board);
     }
 
-    /** Initializes board with given configuration and starting turn.
+    /** Initialize this board with given configuration and starting turn.
+     * Mainly used for debugging.
      *
      * @param config Board configuration.
      * @param turn Starting turn.
@@ -45,7 +46,7 @@ public class Board {
         _winnerKnown = false;
     }
 
-    /** Copies board to this board.
+    /** Copy a board to this board.
      *
      * @param board Board to copy from.
      * */
@@ -63,7 +64,7 @@ public class Board {
         _winner = board._winner;
     }
 
-    /** Resets the board to starting configuration. */
+    /** Reset this board to starting configuration. */
     void reset() {
         for (int r = 0; r < BOARD_SIZE; r++) {
             for (int c = 0; c < BOARD_SIZE; c++) {
@@ -75,7 +76,7 @@ public class Board {
         _winnerKnown = false;
     }
 
-    /** Converts a place string to board coordinates.
+    /** Convert a place string to board coordinates.
      *
      * @param place Place string.
      * @return Coordinates of place.
@@ -84,7 +85,7 @@ public class Board {
         return new int[] {place.charAt(0) - 'a', place.charAt(1) - '1'};
     }
 
-    /** Converts a board coordinates to place string.
+    /** Convert board coordinates to place string.
      *
      * @param col Column.
      * @param row Row.
@@ -117,7 +118,8 @@ public class Board {
         return place;
     }
 
-    /** List of all empty places on the Board.
+    /** Return a list of all empty places on the Board. Result is cached
+     * for quicker access in the future.
      *
      * @return List of all empty place strings.
      * */
@@ -138,7 +140,8 @@ public class Board {
         return emptyPlaces;
     }
 
-    /** Puts a piece corresponding to the current turn on the board.
+    /** Put a piece of the current turn in the specified location on
+     * the board.
      *
      * @param col Column of place to put piece.
      * @param row Row of place to put piece.
@@ -157,7 +160,8 @@ public class Board {
         return false;
     }
 
-    /** Puts a piece corresponding to the current turn on the board.
+    /** Put a piece of the current turn in the specified location on
+     * the board.
      *
      * @param place Place to put piece
      * @return True if piece was put on the place, false if place string
@@ -171,7 +175,8 @@ public class Board {
         return false;
     }
 
-    /** Returns the state of the board to one turn prior. */
+    /** Undo the last move made and return the state of the board to
+     * one move prior. */
     public void undo() {
         String recent = _moves.get(_moves.size() - 1);
         int[] coords = coords(recent);
@@ -182,7 +187,7 @@ public class Board {
         _turn = _turn.opposite();
     }
 
-    /** Returns the move list.
+    /** Return a list of all moves made.
      *
      * @return _moves.
      * */
@@ -190,7 +195,7 @@ public class Board {
         return _moves;
     }
 
-    /** Returns the current turn.
+    /** Return the current turn.
      *
      * @return _turn.
      * */
@@ -198,7 +203,7 @@ public class Board {
         return _turn;
     }
 
-    /** Returns the winner.
+    /** Return the winner.
      *
      * @return null if there is no winner, E if tie, or the winning Piece.
      * */
@@ -225,7 +230,8 @@ public class Board {
         return winner;
     }
 
-    /** Returns the raw board.
+    /** Return the array representation of this board. Mainly used
+     * for debugging.
      *
      * @return _board.
      * */

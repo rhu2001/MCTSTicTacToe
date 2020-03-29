@@ -1,11 +1,14 @@
 package game;
 
 import game.MCTS.MonteCarloTreeSearch;
-
 import java.util.Scanner;
 
 import static game.Piece.*;
 
+/** Main class that handles gameplay.
+ *
+ * @author Richard Hu
+ * */
 public class Game {
 
     /** Amount of time the MCTS is allowed to take. */
@@ -19,7 +22,7 @@ public class Game {
         boolean validCPU = false;
 
         while (!validCPU) {
-            System.out.println("Should the CPU play as X or O?");
+            System.out.println("Should the CPU play as X or O? (X goes first)");
             System.out.print("> ");
             String cpu = keyboard.nextLine();
             if (cpu.equalsIgnoreCase("X")) {
@@ -59,6 +62,7 @@ public class Game {
             }
             winner = board.winner();
         }
+        System.out.println(board);
         if (winner == E) {
             System.out.println("It was a tie!");
         } else {

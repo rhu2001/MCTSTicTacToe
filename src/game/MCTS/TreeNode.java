@@ -2,22 +2,20 @@ package game.MCTS;
 
 import game.Board;
 import game.Piece;
+import org.antlr.v4.runtime.tree.Tree;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /** Tree data structure for MCTS.
  *
  * @author Richard Hu
  * */
-public class TreeNode {
+public class TreeNode implements Comparable<TreeNode> {
 
     /** Square root of 2. */
     public static final double ROOT2 = Math.sqrt(2);
 
-    /** Sets this node's state to the board and sets up RNG according
-     * to the seed.
+    /** Set this node's state to the board.
      *
      * @param board State of this node.
      * @param parent Parent of this node.
@@ -35,7 +33,8 @@ public class TreeNode {
         setUpRNG();
     }
 
-    /** Expands this node. */
+    /** Expand this node by adding to its children all nodes with game states
+     * one move forward of this node's state. */
     void expand() {
         if (!_fullyExpanded) {
             Board temp;
@@ -48,7 +47,17 @@ public class TreeNode {
         }
     }
 
-    /** Picks out a random child.
+    /** Return the child of this node with highest UCT value by sorting the
+     * children in reverse order of UCT value and returning the first child.
+     *
+     * @return child with highest UCT.
+     * */
+    TreeNode highestUCTChild() {
+        _children.sort(Collections.reverseOrder());
+        return _children.get(0);
+    }
+
+    /** Return a random child.
      *
      * @return Random element from _children.
      * */
@@ -73,7 +82,8 @@ public class TreeNode {
         return _state.winner();
     }
 
-    /** Average value of this node.
+    /** Exploitation term of this node, determined by number of times won
+     * divided by number of times visited.
      *
      * @return This node's average value.
      * */
@@ -84,7 +94,9 @@ public class TreeNode {
         return _timesWon / _timesVisited;
     }
 
-    /** UCT value of this node.
+    /** Upper Confidence bounds applied to Trees (UCT) value of this node.
+     * Value increases when this node is less visited or when this node tends
+     * to result in more victories.
      *
      * @return UCT value of this node.
      * */
@@ -95,7 +107,8 @@ public class TreeNode {
         return score() + ROOT2 * Math.sqrt(Math.log(_parent._timesVisited) / _timesVisited);
     }
 
-    /** Plays random moves until the game ends.
+    /** Return the winner of the game starting at this node's game state and
+     * playing random moves until the game ends.
      *
      * @return Winning side.
      * */
@@ -110,18 +123,18 @@ public class TreeNode {
         return winner;
     }
 
-    /** Increments the number of times this node has been visited. */
+    /** Increment the number of times this node has been visited. */
     void incrementVisited() {
         _timesVisited += 1.0;
     }
 
-    /** Increments the number of times that a win has been achieved
+    /** Increment the number of times that a win has been achieved
      * from this state. */
     void incrementWins(double amt) {
         _timesWon += amt;
     }
 
-    /** Sets up randomness. */
+    /** Set up randomness. */
     void setUpRNG() {
         _rng = new Random();
     }
@@ -131,13 +144,18 @@ public class TreeNode {
         return _achievingMove + " : " + uct() + " : " + score();
     }
 
+    @Override
+    public int compareTo(TreeNode other) {
+        return Double.compare(uct(), other.uct());
+    }
+
     /** State of current board. */
     Board _state;
     /** This node's side. */
     Piece _side;
     /** This node's parent. */
     TreeNode _parent;
-    /** The move that got to this node. */
+    /** The move that resulted in this node's state. */
     String _achievingMove;
     /** This node's children. */
     List<TreeNode> _children;

@@ -7,6 +7,10 @@ import static game.Piece.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Tests for the functionality of Board class.
+ *
+ * @author Richard Hu
+ * */
 public class BoardTests {
 
     @Test
