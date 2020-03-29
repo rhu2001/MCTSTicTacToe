@@ -29,7 +29,7 @@ Every time the computer needs to make a move, the root of the tree is set to the
 
 In the selection phase, the algorithm begins at the root node, and takes a path through successive child nodes until it reaches a leaf. The child node that is chosen is the child with the greatest Upper Confidence bounds applied to Trees (UCT) value, which is given by
 
-![uct](https://miro.medium.com/max/1222/1*eFzE9DWAfJKpehpbYSqivQ.png)
+![uct](assets/uct.png)
 
 where
 
