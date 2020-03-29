@@ -207,14 +207,15 @@ public class Board {
             return _winner;
         }
         Piece winner = null;
-        if ((_board[0][0] == _board[0][1] && _board[0][1] == _board[0][2] && _board[0][0] != E)
-                || (_board[1][0] == _board[1][1] && _board[0][1] == _board[1][2] && _board[1][0] != E)
+        if (
+                   (_board[0][0] == _board[0][1] && _board[0][1] == _board[0][2] && _board[0][0] != E)
+                || (_board[1][0] == _board[1][1] && _board[1][1] == _board[1][2] && _board[1][0] != E)
                 || (_board[2][0] == _board[2][1] && _board[2][1] == _board[2][2] && _board[2][0] != E)
                 || (_board[0][0] == _board[1][0] && _board[1][0] == _board[2][0] && _board[0][0] != E)
                 || (_board[0][1] == _board[1][1] && _board[1][1] == _board[2][1] && _board[0][1] != E)
                 || (_board[0][2] == _board[1][2] && _board[1][2] == _board[2][2] && _board[0][2] != E)
-                || (_board[0][0] == _board[1][1] && _board[1][1] == _board[2][2] && _board[0][0] != E)
-                || (_board[0][2] == _board[1][1] && _board[1][1] == _board[2][0] && _board[0][2] != E)) {
+                || (_board[0][0] == _board[1][1] && _board[1][1] == _board[2][2] && _board[1][1] != E)
+                || (_board[0][2] == _board[1][1] && _board[1][1] == _board[2][0] && _board[1][1] != E)) {
             winner = _turn.opposite();
         } else if (emptyPlaces().size() == 0) {
             winner = E;

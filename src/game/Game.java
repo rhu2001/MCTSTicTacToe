@@ -21,10 +21,10 @@ public class Game {
             System.out.print("> ");
             String cpu = keyboard.nextLine();
             if (cpu.equalsIgnoreCase("X")) {
-                Tree.setSide(X);
+                MonteCarloTreeSearch.SIDE = X;
                 validCPU = true;
             } else if (cpu.equalsIgnoreCase("O")) {
-                Tree.setSide(O);
+                MonteCarloTreeSearch.SIDE = O;
                 validCPU = true;
             } else {
                 System.out.println("Invalid side. Must be 'X' or 'O'.");
@@ -34,11 +34,11 @@ public class Game {
         while (winner == null) {
             System.out.println(board);
             String move;
-            if (board.turn() == Tree.cpuSide()) {
+            if (board.turn() == MonteCarloTreeSearch.SIDE) {
                 MonteCarloTreeSearch mcts = new MonteCarloTreeSearch(board);
-                move = mcts.findMove(5000);
+                move = mcts.findMove(2000);
                 board.put(move);
-                System.out.println(Tree.cpuSide() + " to " + move);
+                System.out.println(MonteCarloTreeSearch.SIDE + " to " + move);
             } else {
                 do {
                     System.out.print(board.turn() + "> ");
@@ -48,7 +48,7 @@ public class Game {
                         System.exit(0);
                     }
                 } while (!board.put(move));
-                System.out.println(Tree.cpuSide().opposite() + " to " + move);
+                System.out.println(MonteCarloTreeSearch.SIDE.opposite() + " to " + move);
             }
             winner = board.winner();
         }

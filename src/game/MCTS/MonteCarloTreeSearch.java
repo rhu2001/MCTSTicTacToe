@@ -1,12 +1,21 @@
 package game.MCTS;
 
 import game.Board;
+import game.Piece;
+
+import java.util.Collections;
+import java.util.Comparator;
+
+import static game.Piece.*;
 
 /** Facilitates Monte Carlo tree search.
  *
  * @author Richard Hu
  * */
 public class MonteCarloTreeSearch {
+
+    /** The CPU's side. */
+    public static Piece SIDE;
 
     /** Sets up Monte Carlo tree search on given board.
      *
@@ -30,20 +39,23 @@ public class MonteCarloTreeSearch {
      * */
     public String findMove(long maxTimeMillis) {
         Node node;
-        boolean incrementWin;
-        long start = System.currentTimeMillis(), currTime = System.currentTimeMillis();
-        while (currTime < maxTimeMillis) {
+        Piece winningSide;
+        long start = System.currentTimeMillis();
+        while (System.currentTimeMillis() - start < maxTimeMillis) {
             node = selection(searchTree.getRoot());
-            node = expansion(node);
-            incrementWin = rollout(node);
-            backpropagation(node, incrementWin);
-            currTime += System.currentTimeMillis() - start;
+            if (node.winner() == null) {
+                node = expansion(node);
+            }
+            winningSide = rollout(node);
+            backpropagation(node, winningSide);
         }
+
         double bestScore = Double.NEGATIVE_INFINITY;
         String bestMove = "";
-        for (Node child : searchTree.getRoot().children()) {
+        for (Node child : searchTree.getRoot()._children) {
             if (child.score() > bestScore) {
-                bestMove = child.move();
+                bestScore = child.score();
+                bestMove = child._achievingMove;
             }
         }
         return bestMove;
@@ -55,13 +67,11 @@ public class MonteCarloTreeSearch {
      * @return Child with best UCT value.
      * */
     Node selection(Node node) {
-        if (node.isLeaf()) {
-            //System.out.println("selection");
-            return node;
-        } else {
-            node.sortChildren();
-            return selection(node.firstChild());
+        while (!node.isLeaf()) {
+            node = Collections.max(node._children, Comparator.comparing(Node::uct));
         }
+        System.out.println(node);
+        return node;
     }
 
     /** Expansion phase of MCTS.
@@ -70,11 +80,6 @@ public class MonteCarloTreeSearch {
      * @return Newly added child node.
      * */
     Node expansion(Node node) {
-        //System.out.println("expansion");
-        //System.out.println(node._state);
-        if (node.isTerminal()) {
-            return node;
-        }
         Node newChild = new Node(node.putRandom(), node, null);
         node.addChild(newChild);
         return newChild;
@@ -83,26 +88,24 @@ public class MonteCarloTreeSearch {
     /** Rollout/Simulation phase of MCTS.
      *
      * @param node Node to rollout.
-     * @return True iff rollout resulted in a victory.
+     * @return Winning side of rollout.
      * */
-    boolean rollout(Node node) {
-        //System.out.println("rollout");
+    Piece rollout(Node node) {
         return node.play();
     }
 
     /** Back propagation phase of MCTS.
      *
      * @param node Node to backpropagate.
-     * @param incrementWin if true, increment each parent's win counter.
+     * @param winningSide Side that won on rollout.
      * */
-    void backpropagation(Node node, boolean incrementWin) {
-        //System.out.println("backprop");
-        while (node != searchTree.getRoot()) {
+    void backpropagation(Node node, Piece winningSide) {
+        while (node != null) {
             node.incrementVisited();
-            if (incrementWin) {
+            if (winningSide.opposite() == node._side) {
                 node.incrementWins();
             }
-            node = node.parent();
+            node = node._parent;
         }
     }
 

@@ -14,7 +14,7 @@ public enum Piece {
      * @return Opposite of this piece or empty if this piece
      * is empty.
      * */
-    Piece opposite() {
+    public Piece opposite() {
         switch (this) {
             case X:
                 return O;

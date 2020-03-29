@@ -86,8 +86,54 @@ public class BoardTests {
 
     @Test
     public void winnerTests() {
-        Piece[][] config1 = new Piece[][] {{E, E, O}, {E, O, E}, {O, E, E}};
-        Piece[][] config2 = new Piece[][] {{O, O, O}, {E, E, E}, {E, E, E}};
-        System.out.println(new Board(config1, X).winner());
+        Piece[][] config1 = new Piece[][] {
+                {O, O, O},
+                {E, E, E},
+                {E, E, E}
+        };
+        Piece[][] config2 = new Piece[][] {
+                {E, E, E},
+                {O, O, O},
+                {E, E, E}
+        };
+        Piece[][] config3 = new Piece[][] {
+                {E, E, E},
+                {E, E, E},
+                {O, O, O}
+        };
+        Piece[][] config4 = new Piece[][] {
+                {O, E, E},
+                {O, E, E},
+                {O, E, E}
+        };
+        Piece[][] config5 = new Piece[][] {
+                {E, O, E},
+                {E, O, E},
+                {E, O, E}
+        };
+        Piece[][] config6 = new Piece[][] {
+                {E, E, O},
+                {E, E, O},
+                {E, E, O}
+        };
+        Piece[][] config7 = new Piece[][] {
+                {O, E, E},
+                {E, O, E},
+                {E, E, O}
+        };
+        Piece[][] config8 = new Piece[][] {
+                {E, E, O},
+                {E, O, E},
+                {O, E, E}
+        };
+
+        assertEquals(O, new Board(config1, X).winner());
+        assertEquals(O, new Board(config2, X).winner());
+        assertEquals(O, new Board(config3, X).winner());
+        assertEquals(O, new Board(config4, X).winner());
+        assertEquals(O, new Board(config5, X).winner());
+        assertEquals(O, new Board(config6, X).winner());
+        assertEquals(O, new Board(config7, X).winner());
+        assertEquals(O, new Board(config8, X).winner());
     }
 }
