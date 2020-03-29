@@ -3,7 +3,7 @@ Tic-tac-toe game in which the computer plays using a Monte Carlo tree search.
 
 Computer plays optimally and does not lose. If you beat the computer somehow, please open an issue and paste the game log.
 
-## The Monte Carlo tree search explained
+## Monte Carlo tree search explained
 
 The Monte Carlo tree search algorithm relies on a tree data structure consisting of nodes representing states of the game. A node is a child of another node if and only if the game state stored in the child node can be achieved by making one move on the parent node's game state.
 
