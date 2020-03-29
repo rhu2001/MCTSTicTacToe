@@ -89,8 +89,12 @@ public class MonteCarloTreeSearch {
     static void backpropagation(TreeNode treeNode, Piece winningSide) {
         while (treeNode != null) {
             treeNode.incrementVisited();
-            if (winningSide.opposite() == treeNode._side) {
-                treeNode.incrementWins();
+            if (treeNode._side != SIDE) {
+                if (winningSide.opposite() != SIDE) {
+                    treeNode.incrementWins(1.0);
+                } else {
+                    treeNode.incrementWins(-1.0);
+                }
             }
             treeNode = treeNode._parent;
         }

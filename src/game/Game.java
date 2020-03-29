@@ -34,7 +34,7 @@ public class Game {
             System.out.println(board);
             String move;
             if (board.turn() == MonteCarloTreeSearch.SIDE) {
-                move = MonteCarloTreeSearch.findMove(board, 10000);
+                move = MonteCarloTreeSearch.findMove(board, 5000);
                 board.put(move);
                 System.out.println(MonteCarloTreeSearch.SIDE + " to " + move);
             } else {

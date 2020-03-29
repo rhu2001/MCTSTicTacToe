@@ -116,8 +116,8 @@ public class TreeNode {
 
     /** Increments the number of times that a win has been achieved
      * from this state. */
-    void incrementWins() {
-        _timesWon += 1.0;
+    void incrementWins(double amt) {
+        _timesWon += amt;
     }
 
     /** Sets up randomness. */
