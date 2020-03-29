@@ -2,6 +2,10 @@ package game.MCTS;
 
 import game.Board;
 
+/** Facilitates Monte Carlo tree search.
+ *
+ * @author Richard Hu
+ * */
 public class MonteCarloTreeSearch {
 
     /** Sets up Monte Carlo tree search on given board.

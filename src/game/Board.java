@@ -149,13 +149,13 @@ public class Board {
         if (_board[row][col] == E) {
             _board[row][col] = _turn;
             _moves.add(place(col, row));
-            System.out.println(_turn + " to " + place(col, row));
+            //System.out.println(_turn + " to " + place(col, row));
             _turn = _turn.opposite();
             _emptyPlacesInitialized = false;
             _winnerKnown = false;
             return true;
         }
-        System.out.println("Place " + place(col, row) + " is not empty.");
+        //System.out.println("Place " + place(col, row) + " is not empty.");
         return false;
     }
 
@@ -170,7 +170,7 @@ public class Board {
             int[] coords = coords(place);
             return put(coords[0], coords[1]);
         }
-        System.out.println("Invalid place:  " + place);
+        //System.out.println("Invalid place:  " + place);
         return false;
     }
 

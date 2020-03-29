@@ -14,6 +14,22 @@ import java.util.Random;
  * */
 public class Tree {
 
+    /** Sets the side of the CPU.
+     *
+     * @param side Side of CPU.
+     * */
+    public static void setSide(Piece side) {
+        Node.SIDE = side;
+    }
+
+    /** Gets the side of the CPU.
+     *
+     * @return Node.SIDE.
+     * */
+    public static Piece cpuSide() {
+        return Node.SIDE;
+    }
+
     /** Tree with given root.
      *
      * @param root Root of this tree.
