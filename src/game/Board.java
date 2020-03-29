@@ -242,7 +242,11 @@ public class Board {
             sb.append(r + 1);
             for (int c = 0; c < BOARD_SIZE; c++) {
                 sb.append(" ");
-                sb.append(_board[r][c]);
+                if (_board[r][c] != E) {
+                    sb.append(_board[r][c]);
+                } else {
+                    sb.append("-");
+                }
             }
             sb.append("\n");
         }
