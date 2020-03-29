@@ -19,6 +19,11 @@ public class MonteCarloTreeSearch {
         }
     }
 
+    /** Finds the best move on the current board state.
+     *
+     * @param maxTimeMillis Maximum allowed run time.
+     * @return Best move found.
+     * */
     public String findMove(long maxTimeMillis) {
         Node node;
         boolean incrementWin;
@@ -33,6 +38,11 @@ public class MonteCarloTreeSearch {
         return searchTree.getRoot().move();
     }
 
+    /** Selection phase of MCTS.
+     *
+     * @param node Node to select children from.
+     * @return Child with best UCT value.
+     * */
     Node selection(Node node) {
         if (node.isLeaf()) {
             return node;
@@ -42,16 +52,31 @@ public class MonteCarloTreeSearch {
         }
     }
 
+    /** Expansion phase of MCTS.
+     *
+     * @param node Node to expand.
+     * @return Newly added child node.
+     * */
     Node expansion(Node node) {
         Node newChild = new Node(node.putRandom(), node, null);
         node.addChild(newChild);
         return newChild;
     }
 
+    /** Rollout/Simulation phase of MCTS.
+     *
+     * @param node Node to rollout.
+     * @return True iff rollout resulted in a victory.
+     * */
     boolean rollout(Node node) {
         return node.play();
     }
 
+    /** Back propagation phase of MCTS.
+     *
+     * @param node Node to backpropagate.
+     * @param incrementWin if true, increment each parent's win counter.
+     * */
     void backpropagation(Node node, boolean incrementWin) {
         while (node != searchTree.getRoot()) {
             node.incrementVisited();
