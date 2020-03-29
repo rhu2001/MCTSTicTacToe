@@ -1,4 +1,4 @@
 # TicTacToe
 Tic-tac-toe game in which the computer plays using a Monte Carlo tree search.
 
-CPU plays optimally and does not lose. If you beat the CPU somehow, please open an issue and post the game log.
+Computer plays optimally and does not lose. If you beat the computer somehow, please open an issue and paste the game log.
