@@ -158,6 +158,22 @@ class Node implements Comparable<Node> {
         return score() + ROOT2 * Math.sqrt(Math.log(_parent._timesVisited) / _timesVisited);
     }
 
+    /** Getter for parent.
+     *
+     * @return _parent.
+     * */
+    Node parent() {
+        return _parent;
+    }
+
+    /** Getter for children.
+     *
+     * @return _children.
+     * */
+    List<Node> children() {
+        return _children;
+    }
+
     /** Sorts children according to uct() */
     void sortChildren() {
         _children.sort(Collections.reverseOrder());

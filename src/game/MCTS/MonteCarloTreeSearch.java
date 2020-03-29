@@ -31,15 +31,22 @@ public class MonteCarloTreeSearch {
     public String findMove(long maxTimeMillis) {
         Node node;
         boolean incrementWin;
-        long start = System.currentTimeMillis();
-        while (System.currentTimeMillis() - start < maxTimeMillis) {
+        long start = System.currentTimeMillis(), currTime = System.currentTimeMillis();
+        while (currTime < maxTimeMillis) {
             node = selection(searchTree.getRoot());
             node = expansion(node);
             incrementWin = rollout(node);
             backpropagation(node, incrementWin);
+            currTime += System.currentTimeMillis() - start;
         }
-        searchTree.getRoot().sortChildren();
-        return searchTree.getRoot().move();
+        double bestScore = Double.NEGATIVE_INFINITY;
+        String bestMove = "";
+        for (Node child : searchTree.getRoot().children()) {
+            if (child.score() > bestScore) {
+                bestMove = child.move();
+            }
+        }
+        return bestMove;
     }
 
     /** Selection phase of MCTS.
@@ -49,6 +56,7 @@ public class MonteCarloTreeSearch {
      * */
     Node selection(Node node) {
         if (node.isLeaf()) {
+            //System.out.println("selection");
             return node;
         } else {
             node.sortChildren();
@@ -62,6 +70,11 @@ public class MonteCarloTreeSearch {
      * @return Newly added child node.
      * */
     Node expansion(Node node) {
+        //System.out.println("expansion");
+        //System.out.println(node._state);
+        if (node.isTerminal()) {
+            return node;
+        }
         Node newChild = new Node(node.putRandom(), node, null);
         node.addChild(newChild);
         return newChild;
@@ -73,6 +86,7 @@ public class MonteCarloTreeSearch {
      * @return True iff rollout resulted in a victory.
      * */
     boolean rollout(Node node) {
+        //System.out.println("rollout");
         return node.play();
     }
 
@@ -82,11 +96,13 @@ public class MonteCarloTreeSearch {
      * @param incrementWin if true, increment each parent's win counter.
      * */
     void backpropagation(Node node, boolean incrementWin) {
+        //System.out.println("backprop");
         while (node != searchTree.getRoot()) {
             node.incrementVisited();
             if (incrementWin) {
                 node.incrementWins();
             }
+            node = node.parent();
         }
     }
 

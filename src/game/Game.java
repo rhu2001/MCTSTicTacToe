@@ -37,6 +37,7 @@ public class Game {
             if (board.turn() == Tree.cpuSide()) {
                 MonteCarloTreeSearch mcts = new MonteCarloTreeSearch(board);
                 move = mcts.findMove(5000);
+                board.put(move);
             } else {
                 do {
                     System.out.print(board.turn() + "> ");
@@ -48,6 +49,7 @@ public class Game {
                 } while (!board.put(move));
             }
             winner = board.winner();
+            System.out.println(winner);
         }
         System.out.println(board);
         if (winner == E) {
