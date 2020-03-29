@@ -7,45 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/** Tree data structure for Monte Carlo tree search.
+/** Tree data structure for MCTS.
  *
  * @author Richard Hu
  * */
-public class Tree {
-
-    /** Tree with given root.
-     *
-     * @param root Root of this tree.
-     * */
-    public Tree(Node root) {
-        _root = root;
-    }
-
-    /** Gets the root of this tree.
-     *
-     * @return _root.
-     * */
-    public Node getRoot() {
-        return _root;
-    }
-
-    /** Sets the root of this tree to specified node.
-     *
-     * @param node Node to set to root.
-     * */
-    void setRoot(Node node) {
-        _root = node;
-    }
-
-    /** Root of this tree. */
-    private Node _root;
-}
-
-/** A single node of a tree.
- *
- * @author Richard Hu
- * */
-class Node {
+public class TreeNode {
 
     /** Square root of 2. */
     public static final double ROOT2 = Math.sqrt(2);
@@ -57,7 +23,7 @@ class Node {
      * @param parent Parent of this node.
      * @param move Move that resulted in this node's state.
      * */
-    public Node(Board board, Node parent, String move) {
+    public TreeNode(Board board, TreeNode parent, String move) {
         _state = board;
         _side = _state.turn();
         _parent = parent;
@@ -68,13 +34,18 @@ class Node {
         setUpRNG();
     }
 
-    /** Adds a child to this node.
-     *
-     * @param node Child to add.
-     * */
-    void addChild(Node node) {
-        node._parent = this;
-        _children.add(node);
+    void expand() {
+        Board temp;
+        for (String move : _state.emptyPlaces()) {
+            temp = new Board(_state);
+            temp.put(move);
+            _children.add(new TreeNode(temp, this, move));
+        }
+    }
+
+    TreeNode randomChild() {
+        int index = _rng.nextInt(_children.size());
+        return _children.get(index);
     }
 
     /** Whether this node is a leaf.
@@ -115,11 +86,6 @@ class Node {
         return score() + ROOT2 * Math.sqrt(Math.log(_parent._timesVisited) / _timesVisited);
     }
 
-    /** Sets up randomness. */
-    void setUpRNG() {
-        _rng = new Random();
-    }
-
     /** Plays random moves until the game ends.
      *
      * @return Winning side.
@@ -154,6 +120,11 @@ class Node {
         _timesWon += 1.0;
     }
 
+    /** Sets up randomness. */
+    void setUpRNG() {
+        _rng = new Random();
+    }
+
     @Override
     public String toString() {
         return _achievingMove + " : " + uct() + " : " + score();
@@ -164,11 +135,11 @@ class Node {
     /** This node's side. */
     Piece _side;
     /** This node's parent. */
-    Node _parent;
+    TreeNode _parent;
     /** The move that got to this node. */
     String _achievingMove;
     /** This node's children. */
-    List<Node> _children;
+    List<TreeNode> _children;
     /** The number of times this node has been visited. */
     double _timesVisited;
     /** The number of times that a simulation passing through this node has won. */

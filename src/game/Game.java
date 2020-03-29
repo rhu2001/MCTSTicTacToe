@@ -1,7 +1,6 @@
 package game;
 
 import game.MCTS.MonteCarloTreeSearch;
-import game.MCTS.Tree;
 
 import java.util.Scanner;
 
@@ -35,8 +34,7 @@ public class Game {
             System.out.println(board);
             String move;
             if (board.turn() == MonteCarloTreeSearch.SIDE) {
-                MonteCarloTreeSearch mcts = new MonteCarloTreeSearch(board);
-                move = mcts.findMove(2000);
+                move = MonteCarloTreeSearch.findMove(board, 10000);
                 board.put(move);
                 System.out.println(MonteCarloTreeSearch.SIDE + " to " + move);
             } else {
