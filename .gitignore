@@ -25,3 +25,9 @@ hs_err_pid*
 
 # MacOS garbage
 .DS_Store
+
+# IntelliJ files
+.idea/workspace.xml
+.idea/usage.statistics.xml
+.idea/tasks.xml
+.idea/shelf/
