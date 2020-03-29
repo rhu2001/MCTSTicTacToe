@@ -31,16 +31,20 @@ public class TreeNode {
         _achievingMove = move;
         _timesVisited = 0;
         _timesWon = 0;
+        _fullyExpanded = false;
         setUpRNG();
     }
 
     /** Expands this node. */
     void expand() {
-        Board temp;
-        for (String move : _state.emptyPlaces()) {
-            temp = new Board(_state);
-            temp.put(move);
-            _children.add(new TreeNode(temp, this, move));
+        if (!_fullyExpanded) {
+            Board temp;
+            for (String move : _state.emptyPlaces()) {
+                temp = new Board(_state);
+                temp.put(move);
+                _children.add(new TreeNode(temp, this, move));
+            }
+            _fullyExpanded = true;
         }
     }
 
@@ -141,6 +145,8 @@ public class TreeNode {
     double _timesVisited;
     /** The number of times that a simulation passing through this node has won. */
     double _timesWon;
+    /** True iff this node has been expanded. */
+    private boolean _fullyExpanded;
     /** Random number generator. */
     Random _rng;
 }

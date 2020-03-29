@@ -8,6 +8,9 @@ import static game.Piece.*;
 
 public class Game {
 
+    /** Amount of time the MCTS is allowed to take. */
+    static final long MAX_TIME = 1000;
+
     public static void main(String[] args) {
         Board board = new Board();
         Scanner keyboard = new Scanner(System.in);
@@ -30,11 +33,16 @@ public class Game {
             }
         }
 
+        String playerMove = null;
+
         while (winner == null) {
             System.out.println(board);
             String move;
             if (board.turn() == MonteCarloTreeSearch.SIDE) {
-                move = MonteCarloTreeSearch.findMove(board, 5000);
+                if (MonteCarloTreeSearch.REQUIRES_SETUP) {
+                    MonteCarloTreeSearch.setUp(board);
+                }
+                move = MonteCarloTreeSearch.findMove(playerMove, MAX_TIME);
                 board.put(move);
                 System.out.println(MonteCarloTreeSearch.SIDE + " to " + move);
             } else {
@@ -46,6 +54,7 @@ public class Game {
                         System.exit(0);
                     }
                 } while (!board.put(move));
+                playerMove = move;
                 System.out.println(MonteCarloTreeSearch.SIDE.opposite() + " to " + move);
             }
             winner = board.winner();

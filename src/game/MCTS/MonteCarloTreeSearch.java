@@ -15,17 +15,37 @@ public class MonteCarloTreeSearch {
     /** The CPU's side. */
     public static Piece SIDE;
 
+    /** True iff MCTS has not been set up. */
+    public static boolean REQUIRES_SETUP = true;
+
     /** The CPU's search tree. */
     private static TreeNode ROOT;
 
+    /** Sets up MCTS to its first board.
+     *
+     * @param firstBoard The initial board.
+     * */
+    public static void setUp(Board firstBoard) {
+        Board state = new Board(firstBoard);
+        ROOT = new TreeNode(state, null, null);
+        REQUIRES_SETUP = false;
+    }
+
     /** Finds the best move on the current board state.
      *
+     * @param playerMove Move that led to the current state.
      * @param maxTimeMillis Maximum allowed run time.
      * @return Best move found.
      * */
-    public static String findMove(Board board, long maxTimeMillis) {
-        Board state = new Board(board);
-        ROOT = new TreeNode(state, null, null);
+    public static String findMove(String playerMove, long maxTimeMillis) {
+        if (playerMove != null) {
+            for (TreeNode child : ROOT._children) {
+                if (playerMove.equals(child._achievingMove)) {
+                    ROOT = child;
+                    break;
+                }
+            }
+        }
 
         TreeNode node;
         Piece winningSide;
@@ -36,17 +56,20 @@ public class MonteCarloTreeSearch {
                 node = expansion(node);
             }
             winningSide = rollout(node);
-            backpropagation(node, winningSide);
+            backPropagation(node, winningSide);
         }
 
         double bestScore = Double.NEGATIVE_INFINITY;
+        TreeNode bestChild = null;
         String bestMove = "";
         for (TreeNode child : ROOT._children) {
             if (child.score() > bestScore) {
                 bestScore = child.score();
+                bestChild = child;
                 bestMove = child._achievingMove;
             }
         }
+        ROOT = bestChild;
         return bestMove;
     }
 
@@ -83,10 +106,10 @@ public class MonteCarloTreeSearch {
 
     /** Back propagation phase of MCTS.
      *
-     * @param treeNode Node to backpropagate.
+     * @param treeNode Node to back propagate.
      * @param winningSide Side that won on rollout.
      * */
-    static void backpropagation(TreeNode treeNode, Piece winningSide) {
+    static void backPropagation(TreeNode treeNode, Piece winningSide) {
         while (treeNode != null) {
             treeNode.incrementVisited();
             if (treeNode._side != SIDE) {

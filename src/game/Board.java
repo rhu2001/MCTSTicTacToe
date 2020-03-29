@@ -277,16 +277,6 @@ public class Board {
                     }
                 }
             }
-            if (_emptyPlaces.size() != otherBoard._emptyPlaces.size()) {
-                return false;
-            }
-            if (_emptyPlaces.size() > 0) {
-                for (int i = 0; i < _emptyPlaces.size(); i++) {
-                    if (!_emptyPlaces.get(i).equals(otherBoard._emptyPlaces.get(i))) {
-                        return false;
-                    }
-                }
-            }
             return true;
         } catch (ClassCastException e) {
             return false;
