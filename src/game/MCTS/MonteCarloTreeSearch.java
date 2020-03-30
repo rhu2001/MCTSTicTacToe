@@ -112,8 +112,8 @@ public class MonteCarloTreeSearch {
      * of times it has been visited. If during rollout, the computer's side won
      * and this node's side is the opposite of the computer's side, increment this
      * node's win count. If the computer's tied during rollout, increment the win
-     * count by 0.5. Otherwise, if the computer's lost, decrement the win count.
-     * Do the same for the node's parent and repeat until the root is reached.
+     * count by 0.5. Do the same for the node's parent and repeat until the root is
+     * reached.
      *
      * @param treeNode Node to back propagate.
      * @param winningSide Side that won on rollout.
@@ -126,8 +126,6 @@ public class MonteCarloTreeSearch {
                     treeNode.incrementWins(1.0);
                 } else if (winningSide == E) {
                     treeNode.incrementWins(0.5);
-                } else {
-                    treeNode.incrementWins(-1.0);
                 }
             }
             treeNode = treeNode._parent;
