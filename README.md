@@ -27,7 +27,7 @@ Every time the computer needs to make a move, the root of the tree is set to the
 
 **1. Selection**
 
-In the selection phase, the algorithm begins at the root node, and takes a path through successive child nodes until it reaches a leaf. The child node that is chosen is the child with the greatest Upper Confidence bounds applied to Trees (UCT) value, which is given by
+In the selection phase, the algorithm begins at the root node, and takes a path through successive child nodes until it reaches a node which has not been fully expanded. The child node that is chosen is the child with the greatest Upper Confidence bounds applied to Trees (UCT) value, which is given by
 
 ![uct](assets/uct.png)
 
@@ -42,7 +42,7 @@ The UCT value balances exploration and exploitation, favoring nodes that tend to
 
 **2. Expansion**
 
-In the expansion phase, the algorithm takes the leaf that was found in selection and adds to its children new nodes containing all possible game states that can be obtained by making one move on the former leaf's game state. The algorithm then returns a random child of the former leaf.
+In the expansion phase, the algorithm takes the node that was found in selection and adds to its children a new node representing a random game state than can immediately succeed the former node and that is not already in the former node's children. The algorithm then returns the newly created node.
 
 **3. Simulation/Rollout**
 
